@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  background: #050608;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 20% 5%, rgba(74, 155, 234, 0.16), transparent 28rem),
+    radial-gradient(circle at 82% 12%, rgba(12, 54, 108, 0.32), transparent 34rem),
+    linear-gradient(180deg, #050608 0%, #070b12 46%, #030405 100%);
+  color: #f4f7fb;
+}
+
+::selection {
+  background: rgba(74, 155, 234, 0.35);
+}
+
+.glass {
+  border: 1px solid rgba(139, 178, 218, 0.16);
+  background: linear-gradient(145deg, rgba(11, 17, 25, 0.86), rgba(5, 8, 13, 0.72));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 24px 70px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(18px);
+}
+
+.hairline {
+  border-color: rgba(139, 178, 218, 0.13);
+}
+
+.terminal-grid {
+  background-image:
+    linear-gradient(rgba(91, 166, 235, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91, 166, 235, 0.07) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, black, transparent 86%);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.chart-line {
+  stroke-dasharray: 460;
+  animation: draw 4.5s ease-in-out infinite;
+}
+
+.noise {
+  position: relative;
+}
+
+.noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.14;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
