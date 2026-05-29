@@ -19,8 +19,8 @@ export function SiteFooter() {
           <Link href="/contact" className="hover:text-white">Contact</Link>
         </div>
         <div className="text-sm text-white/40 md:text-right">
-          <a className="text-signal hover:text-cyanline" href="mailto:impliedaiservices@gmail.com">
-            impliedaiservices@gmail.com
+          <a className="text-signal hover:text-cyanline" href="mailto:contact@impliedai.org">
+            contact@impliedai.org
           </a>
           <p className="mt-2">Independent research platform. impliedai.org</p>
         </div>
