@@ -22,7 +22,7 @@ export function SiteFooter() {
           <a className="text-signal hover:text-cyanline" href="mailto:impliedaiservices@gmail.com">
             impliedaiservices@gmail.com
           </a>
-          <p className="mt-2">Independent research platform. impliedpremium.com</p>
+          <p className="mt-2">Independent research platform. impliedai.org</p>
         </div>
       </div>
     </footer>
