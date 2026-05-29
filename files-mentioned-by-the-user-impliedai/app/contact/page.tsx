@@ -17,7 +17,7 @@ export default function ContactPage() {
             Best for investor-style feedback, M&A research conversations, dataset suggestions, and early access.
           </p>
           <Link
-            href="mailto:contact@impliedai.org"
+           href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@impliedai.org"
             className="mt-8 inline-flex rounded-md bg-signal px-5 py-3 text-sm font-bold text-white shadow-glow transition hover:bg-cyanline hover:text-ink"
           >
             Email ImpliedAI
