@@ -9,7 +9,7 @@ export default function OverpayIndexPage() {
       <PageIntro
         eyebrow="Overpay Index dashboard"
         title="A 0-100 score for whether the premium looks warranted."
-        copy="The Overpay Index compares simulated fair premium output with the actual acquisition premium, then weights the spread by strategic fit, target quality, market cycle, competitive dynamics, and integration risk."
+        copy="The Overpay Index compares preview fair-premium output with the actual acquisition premium, then weights the spread by strategic fit, target quality, market cycle, competitive dynamics, and integration risk."
       />
       <SectionShell className="pt-6">
         <TerminalPanel />

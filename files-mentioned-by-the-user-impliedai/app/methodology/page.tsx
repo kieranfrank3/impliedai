@@ -7,7 +7,7 @@ export default function MethodologyPage() {
       <PageIntro
         eyebrow="Methodology"
         title="Premium prediction built around how bankers actually frame deals."
-        copy="The current product shell uses simulated outputs, but the methodology is designed for a real transaction dataset: train on historical public M&A, engineer strategic and financial variables, and estimate the premium that comparable deals would imply."
+        copy="The current research preview uses illustrative outputs, but the methodology is designed for a real transaction dataset: train on historical public M&A, engineer strategic and financial variables, and estimate the premium that comparable deals would imply."
       />
       <SectionShell className="grid gap-6 pt-6 lg:grid-cols-[0.9fr_1.1fr]">
         <div className="glass rounded-lg p-8">
@@ -39,9 +39,9 @@ export default function MethodologyPage() {
         <div className="glass rounded-lg p-8">
           <Eyebrow>Important note</Eyebrow>
           <p className="max-w-4xl text-lg leading-8 text-white/64">
-            The current website intentionally uses fake data first. That is the right order: prove the product,
-            workflow, research framing, and institutional aesthetic before investing in SEC scraping, data licensing,
-            Python pipelines, and production machine learning.
+            The current research preview uses illustrative transaction outputs first. That is the right order:
+            prove the product, workflow, research framing, and institutional aesthetic before investing in SEC
+            scraping, data licensing, Python pipelines, and production machine learning.
           </p>
         </div>
       </SectionShell>

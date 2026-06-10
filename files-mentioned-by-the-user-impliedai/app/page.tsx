@@ -56,7 +56,7 @@ export default function Home() {
           />
           <FeatureCard
             title="Premium Predictor"
-            copy="Simulated fair-premium outputs using sector, growth, buyer type, process intensity, market cycle, and strategic fit."
+            copy="Preview fair-premium outputs using sector, growth, buyer type, process intensity, market cycle, and strategic fit."
           />
           <FeatureCard
             title="Transaction Intelligence"
@@ -71,7 +71,7 @@ export default function Home() {
             <Eyebrow>Featured signal</Eyebrow>
             <h2 className="font-display text-4xl font-semibold">Microsoft → Activision</h2>
             <p className="mt-5 text-white/58">
-              The simulated model flags a meaningful spread between fair premium and announced premium, driven by
+              The preview model flags a meaningful spread between fair premium and announced premium, driven by
               strategic scarcity, category control, regulatory friction, and platform synergy expectations.
             </p>
             <div className="mt-8 grid grid-cols-3 gap-3">
@@ -92,7 +92,7 @@ export default function Home() {
       </SectionShell>
 
       <SectionShell>
-        <Eyebrow>Recent mock outputs</Eyebrow>
+        <Eyebrow>Illustrative research outputs</Eyebrow>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {featuredDeals.slice(0, 6).map((deal) => (
             <div key={`${deal.acquirer}-${deal.target}`} className="glass rounded-lg p-5">

@@ -11,7 +11,7 @@ export default function PlatformPage() {
       />
       <SectionShell className="grid gap-6 pt-6 lg:grid-cols-3">
         <PlatformBlock title="Deal Input" copy="Capture acquirer, target, transaction value, unaffected price, sector, buyer type, consideration mix, and strategic rationale." />
-        <PlatformBlock title="Premium Engine" copy="Simulated machine-learning outputs estimate fair premium bands and compare the announced price against historical precedent behavior." />
+        <PlatformBlock title="Premium Engine" copy="Preview machine-learning outputs estimate fair premium bands and compare the announced price against historical precedent behavior." />
         <PlatformBlock title="Research Console" copy="Generate Overpay Index scores, driver tags, comparable deal context, and a concise transaction verdict for diligence workflows." />
       </SectionShell>
       <SectionShell className="pt-2">

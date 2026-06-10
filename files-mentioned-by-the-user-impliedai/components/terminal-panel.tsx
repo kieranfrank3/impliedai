@@ -26,7 +26,7 @@ export function TerminalPanel() {
           <div className="mt-5 grid grid-cols-3 gap-3 text-sm">
             <MiniStat label="Avg OPI" value="71" />
             <MiniStat label="Signal" value="High" />
-            <MiniStat label="Universe" value="Mock" />
+            <MiniStat label="Universe" value="Preview" />
           </div>
         </div>
         <div className="p-5">
