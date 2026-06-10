@@ -1,4 +1,5 @@
 import { DealCard } from "@/components/deal-card";
+import { PremiumPredictor } from "@/components/premium-predictor";
 import { PageIntro, SectionShell, Eyebrow } from "@/components/section";
 import { TerminalPanel } from "@/components/terminal-panel";
 import { featuredDeals } from "@/lib/data";
@@ -13,6 +14,9 @@ export default function OverpayIndexPage() {
       />
       <SectionShell className="pt-6">
         <TerminalPanel />
+      </SectionShell>
+      <SectionShell className="pt-2">
+        <PremiumPredictor />
       </SectionShell>
       <SectionShell className="pt-2">
         <Eyebrow>Deal scores</Eyebrow>
