@@ -3,7 +3,7 @@ import { featuredDeals } from "@/lib/data";
 
 export function TerminalPanel() {
   return (
-    <div className="glass animate-float overflow-hidden rounded-lg">
+    <div className="glass overflow-hidden rounded-lg">
       <div className="flex items-center justify-between border-b hairline px-5 py-4">
         <div>
           <p className="text-xs uppercase tracking-[0.26em] text-white/34">Live Premium Monitor</p>
