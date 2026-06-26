@@ -1,13 +1,16 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   BarChart3,
   BrainCircuit,
   CheckCircle2,
+  FileText,
+  Gauge,
   LineChart,
   LockKeyhole,
   Search,
@@ -15,7 +18,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { BarMatrix, Sparkline } from "@/components/charts";
+import { Sparkline } from "@/components/charts";
 import { featuredDeals, platformMetrics } from "@/lib/data";
 
 const fadeUp = {
@@ -49,10 +52,47 @@ const workflow = [
   "Generate Overpay Index and research verdict"
 ];
 
+const driverAnalysis = [
+  { label: "Strategic Fit", score: 94 },
+  { label: "Revenue Growth", score: 81 },
+  { label: "Market Position", score: 74 },
+  { label: "Competitive Dynamics", score: 68 },
+  { label: "Regulatory Risk", score: 42 },
+  { label: "Synergy Potential", score: 88 },
+  { label: "Integration Complexity", score: 57 }
+];
+
+const recentResearch = [
+  featuredDeals[0],
+  featuredDeals[1],
+  featuredDeals[3],
+  featuredDeals[2],
+  {
+    slug: "dell-emc",
+    acquirer: "Dell",
+    target: "EMC",
+    value: "$67.0B",
+    fairPremium: 22,
+    actualPremium: 28,
+    overpayIndex: 62
+  },
+  {
+    slug: "disney-fox",
+    acquirer: "Disney",
+    target: "Fox",
+    value: "$71.3B",
+    fairPremium: 26,
+    actualPremium: 36,
+    overpayIndex: 61
+  }
+];
+
 export function HomePage() {
   return (
     <>
       <Hero />
+      <FeaturedResearch />
+      <RecentResearch />
       <MetricStrip />
       <PlatformModules />
       <WorkflowSection />
@@ -142,16 +182,133 @@ function Hero() {
   );
 }
 
+function FeaturedResearch() {
+  const deal = featuredDeals[1];
+
+  return (
+    <section className="mx-auto max-w-7xl px-5 pb-8 sm:px-8">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.55 }}
+        className="overflow-hidden rounded-xl border border-signal/18 bg-[linear-gradient(145deg,rgba(8,13,20,0.92),rgba(3,6,10,0.84))] shadow-[0_28px_90px_rgba(0,0,0,0.34)]"
+      >
+        <div className="grid lg:grid-cols-[0.74fr_1.26fr]">
+          <div className="border-b hairline p-7 lg:border-b-0 lg:border-r">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.035] px-3 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-cyanline">
+              <FileText className="h-3.5 w-3.5" />
+              Featured Research
+            </div>
+            <h2 className="font-display text-4xl font-semibold leading-tight md:text-5xl">
+              Broadcom <span className="text-signal">→</span> VMware
+            </h2>
+            <p className="mt-4 text-sm uppercase tracking-[0.2em] text-white/34">
+              {deal.value} transaction · {deal.sector}
+            </p>
+            <p className="mt-6 leading-8 text-white/58">{deal.modelCommentary}</p>
+          </div>
+
+          <div className="p-7">
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <ResearchMetric label="Buyer" value={deal.acquirer} />
+              <ResearchMetric label="Target" value={deal.target} />
+              <ResearchMetric label="Fair Premium" value={`${deal.fairPremium}%`} />
+              <ResearchMetric label="Actual Premium" value={`${deal.actualPremium}%`} signal />
+            </div>
+            <div className="mt-5 grid gap-5 lg:grid-cols-[0.65fr_1fr]">
+              <div className="rounded-xl border border-signal/25 bg-signal/[0.055] p-5">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.22em] text-white/36">OPI Score</p>
+                    <p className="mt-2 text-5xl font-semibold text-cyanline">{deal.overpayIndex}</p>
+                  </div>
+                  <Gauge className="h-9 w-9 text-cyanline" />
+                </div>
+                <p className="mt-4 text-sm font-semibold text-white/70">{deal.verdict}</p>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/[0.03] p-5">
+                <p className="text-xs uppercase tracking-[0.22em] text-white/36">AI explanation</p>
+                <p className="mt-3 leading-7 text-white/58">
+                  Elevated overpay signal reflects a large announced premium, financing-cycle pressure, multiple
+                  compression risk, and reliance on post-close margin expansion to justify value creation.
+                </p>
+              </div>
+            </div>
+            <Link
+              href={`/historical-deals/${deal.slug}`}
+              className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-cyanline transition hover:text-white"
+            >
+              Read full deal note <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
+function RecentResearch() {
+  return (
+    <section className="mx-auto max-w-7xl px-5 pb-20 pt-12 sm:px-8">
+      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.28em] text-signal">Recent Research</p>
+          <h2 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-tight md:text-5xl">
+            Recently analyzed transactions.
+          </h2>
+        </div>
+        <p className="max-w-md leading-7 text-white/52">
+          Illustrative premium outputs presented in an investment-banking research format.
+        </p>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {recentResearch.map((deal, index) => (
+          <motion.div
+            key={deal.slug}
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.42, delay: index * 0.04 }}
+          >
+            <Link
+              href={featuredDeals.some((item) => item.slug === deal.slug) ? `/historical-deals/${deal.slug}` : "/historical-deals"}
+              className="group block h-full rounded-xl border border-white/10 bg-white/[0.03] p-5 shadow-insetline transition duration-300 hover:-translate-y-1 hover:border-signal/35 hover:bg-signal/[0.045]"
+            >
+              <div className="mb-6 flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm text-white/38">{deal.value}</p>
+                  <h3 className="mt-2 text-xl font-semibold">
+                    {deal.acquirer} <span className="text-signal">→</span> {deal.target}
+                  </h3>
+                </div>
+                <span className="rounded-full border border-signal/35 bg-signal/10 px-3 py-1 text-xs font-bold text-cyanline">
+                  OPI {deal.overpayIndex}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <Mini label="Actual Premium" value={`${deal.actualPremium}%`} />
+                <Mini label="Predicted Premium" value={`${deal.fairPremium}%`} />
+              </div>
+            </Link>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function HeroDashboard() {
   const liveDeals = featuredDeals.slice(0, 4);
 
   return (
-    <div className="relative rounded-xl border border-signal/20 bg-[linear-gradient(145deg,rgba(8,13,20,0.94),rgba(3,6,10,0.84))] shadow-[0_40px_120px_rgba(0,0,0,0.44)] backdrop-blur-2xl">
+    <div className="relative rounded-xl border border-signal/20 bg-[linear-gradient(145deg,rgba(8,13,20,0.96),rgba(3,6,10,0.86))] shadow-[0_44px_130px_rgba(0,0,0,0.52)] backdrop-blur-2xl">
       <div className="absolute -inset-px rounded-xl bg-gradient-to-r from-signal/0 via-signal/30 to-cyanline/0 opacity-50 blur-sm" />
       <div className="relative overflow-hidden rounded-xl">
-        <div className="flex flex-col gap-4 border-b hairline px-5 py-4 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-4 border-b hairline px-6 py-5 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-md border border-signal/25 bg-signal/10">
+            <div className="flex h-10 w-10 items-center justify-center rounded-md border border-signal/25 bg-signal/10 shadow-glow">
               <LineChart className="h-4 w-4 text-cyanline" />
             </div>
             <div>
@@ -166,17 +323,20 @@ function HeroDashboard() {
         </div>
 
         <div className="grid lg:grid-cols-[0.92fr_1.08fr]">
-          <div className="border-b hairline p-5 lg:border-b-0 lg:border-r">
-            <div className="grid gap-3 sm:grid-cols-3">
+          <div className="border-b hairline p-6 lg:border-b-0 lg:border-r">
+            <div className="grid gap-4 sm:grid-cols-3">
               <ConsoleMetric label="Fair Premium" value="31%" />
               <ConsoleMetric label="Actual Premium" value="48%" signal />
               <ConsoleMetric label="OPI Score" value="82" signal />
             </div>
 
-            <div className="mt-6 rounded-lg border border-white/10 bg-black/22 p-4">
+            <div className="mt-6 rounded-xl border border-white/10 bg-black/24 p-5 shadow-insetline">
               <div className="mb-4 flex items-center justify-between">
-                <p className="text-sm text-white/48">Premium spread signal</p>
-                <p className="text-sm font-semibold text-cyanline">+17% delta</p>
+                <div>
+                  <p className="text-sm font-semibold text-white/72">Premium spread signal</p>
+                  <p className="mt-1 text-xs text-white/36">Predicted fair premium vs. announced premium</p>
+                </div>
+                <p className="rounded-full border border-signal/30 bg-signal/10 px-3 py-1 text-sm font-semibold text-cyanline">+17% delta</p>
               </div>
               <div className="h-44">
                 <Sparkline values={[18, 24, 31, 29, 42, 48, 53, 59, 64, 71, 77, 82]} height={150} />
@@ -184,21 +344,15 @@ function HeroDashboard() {
             </div>
           </div>
 
-          <div className="p-5">
-            <div className="grid gap-5 xl:grid-cols-[1fr_0.92fr]">
-              <div className="rounded-lg border border-white/10 bg-white/[0.025] p-4">
-                <div className="mb-4 flex items-center justify-between">
-                  <p className="text-sm text-white/48">Driver intensity</p>
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyanline">Live</p>
-                </div>
-                <BarMatrix />
-              </div>
+          <div className="p-6">
+            <div className="grid gap-5 xl:grid-cols-[1.05fr_0.95fr]">
+              <DriverAnalysisPanel />
               <div className="space-y-3">
                 {liveDeals.map((deal) => (
                   <Link
                     key={deal.slug}
                     href={`/historical-deals/${deal.slug}`}
-                    className="block rounded-lg border border-white/10 bg-white/[0.025] p-4 transition hover:border-signal/35 hover:bg-signal/[0.055]"
+                    className="block rounded-xl border border-white/10 bg-white/[0.025] p-4 shadow-insetline transition duration-300 hover:-translate-y-0.5 hover:border-signal/35 hover:bg-signal/[0.055]"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
@@ -224,6 +378,58 @@ function HeroDashboard() {
   );
 }
 
+function DriverAnalysisPanel() {
+  const reduceMotion = useReducedMotion();
+
+  return (
+    <div className="rounded-xl border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.035),rgba(255,255,255,0.018))] p-5 shadow-insetline">
+      <div className="mb-5 flex items-start justify-between gap-4">
+        <div>
+          <p className="text-sm font-semibold text-white/76">AI driver analysis</p>
+          <p className="mt-1 text-xs leading-5 text-white/38">Factor-level confidence behind the current premium verdict</p>
+        </div>
+        <span className="rounded-full border border-signal/35 bg-signal/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-cyanline">
+          Active
+        </span>
+      </div>
+
+      <div className="space-y-4">
+        {driverAnalysis.map((driver, index) => (
+          <motion.div
+            key={driver.label}
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.38, delay: index * 0.04 }}
+          >
+            <div className="mb-2 flex items-center justify-between gap-4">
+              <span className="text-sm font-medium text-white/68">{driver.label}</span>
+              <span className="font-mono text-sm font-semibold text-cyanline">{driver.score}%</span>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full bg-white/[0.07]">
+              <motion.div
+                initial={{ width: reduceMotion ? `${driver.score}%` : 0 }}
+                whileInView={{ width: `${driver.score}%` }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: reduceMotion ? 0 : 0.85,
+                  delay: reduceMotion ? 0 : 0.1 + index * 0.05,
+                  ease: "easeOut"
+                }}
+                className={
+                  driver.label === "Regulatory Risk" || driver.label === "Integration Complexity"
+                    ? "h-full rounded-full bg-gradient-to-r from-white/35 to-signal/70"
+                    : "h-full rounded-full bg-gradient-to-r from-signal to-cyanline shadow-glow"
+                }
+              />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function MetricStrip() {
   return (
     <section className="border-y hairline bg-black/20">
@@ -237,7 +443,9 @@ function MetricStrip() {
             transition={{ duration: 0.45, delay: index * 0.05 }}
             className="py-8 md:px-8"
           >
-            <p className="text-3xl font-semibold text-cyanline md:text-4xl">{metric.value}</p>
+            <p className="text-3xl font-semibold text-cyanline md:text-4xl">
+              <AnimatedMetricValue value={metric.value} />
+            </p>
             <p className="mt-2 text-sm text-white/46">{metric.label}</p>
           </motion.div>
         ))}
@@ -466,12 +674,76 @@ function StatusPill({ icon: Icon, label }: { icon: LucideIcon; label: string }) 
 
 function ConsoleMetric({ label, value, signal = false }: { label: string; value: string; signal?: boolean }) {
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.035] p-4">
+    <div className="rounded-xl border border-white/10 bg-white/[0.035] p-5 shadow-insetline">
       <p className="text-[0.65rem] uppercase tracking-[0.22em] text-white/35">{label}</p>
       <p className={signal ? "mt-2 text-3xl font-semibold text-cyanline" : "mt-2 text-3xl font-semibold text-white/86"}>
         {value}
       </p>
     </div>
+  );
+}
+
+function ResearchMetric({ label, value, signal = false }: { label: string; value: string; signal?: boolean }) {
+  return (
+    <div className="rounded-xl border border-white/10 bg-white/[0.035] p-4 shadow-insetline">
+      <p className="text-[0.65rem] uppercase tracking-[0.22em] text-white/35">{label}</p>
+      <p className={signal ? "mt-2 text-2xl font-semibold text-cyanline" : "mt-2 text-xl font-semibold text-white/84"}>
+        {value}
+      </p>
+    </div>
+  );
+}
+
+function AnimatedMetricValue({ value }: { value: string }) {
+  const counterRef = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(counterRef, { once: true, margin: "-40px" });
+  const reduceMotion = useReducedMotion();
+  const isRange = value.includes("-");
+  const numericValue = Number(value.replace(/[^0-9]/g, ""));
+  const suffix = value.replace(/[0-9]/g, "");
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    if (!numericValue || isRange || !isInView) {
+      return;
+    }
+
+    if (reduceMotion) {
+      setDisplayValue(numericValue);
+      return;
+    }
+
+    let frame = 0;
+    let animationFrame = 0;
+    const totalFrames = 42;
+    const animate = () => {
+      frame += 1;
+      const progress = 1 - Math.pow(1 - frame / totalFrames, 3);
+      setDisplayValue(Math.round(numericValue * progress));
+
+      if (frame < totalFrames) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [isInView, isRange, numericValue, reduceMotion]);
+
+  if (!numericValue || isRange) {
+    return <span ref={counterRef}>{value}</span>;
+  }
+
+  return (
+    <motion.span
+      ref={counterRef}
+      initial={{ opacity: 0 }}
+      animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+      transition={{ duration: 0.45 }}
+    >
+      {displayValue}
+      {suffix}
+    </motion.span>
   );
 }
 
